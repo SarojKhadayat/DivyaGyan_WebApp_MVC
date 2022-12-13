@@ -24,5 +24,26 @@ namespace DivyaGyan_WebApp_MVC.Controllers
             productRepository.CreateProduct(product);
             return RedirectToAction("Index");
         }
+
+        [HttpGet]
+        public IActionResult Edit(int id) {
+            var productRepository=new ProductRepository();
+            var product=productRepository.GetProductById(id);
+            return View(product);
+        }
+
+        [HttpPost]
+        public IActionResult Edit(Product product)
+        {
+            var productRepository = new ProductRepository();
+            productRepository.UpdateProduct(product);
+            return RedirectToAction("Index");
+        }
+
+        public IActionResult Delete(int id) {
+            var productRepository = new ProductRepository();
+            productRepository.DeleteProduct(id);
+            return RedirectToAction("Index");
+        }
     }
 }

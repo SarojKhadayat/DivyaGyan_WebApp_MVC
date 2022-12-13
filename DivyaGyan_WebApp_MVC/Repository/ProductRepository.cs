@@ -25,7 +25,8 @@ namespace DivyaGyan_WebApp_MVC.Repository
             sqlConnection.Close();
             return products;
         }
-        public void CreateProduct(Product product ) {
+        public void CreateProduct(Product product)
+        {
             SqlConnection conn = new SqlConnection(_connectionString);
             var cmd = "Insert into Product values (@Name, @Code, @Desc, @Create dDateTime)";
             SqlCommand sqlCommand = new(cmd, conn);
@@ -36,6 +37,53 @@ namespace DivyaGyan_WebApp_MVC.Repository
             conn.Open();
             sqlCommand.ExecuteNonQuery();
             conn.Close();
+        }
+
+        public Product GetProductById(int id)
+        {
+            SqlConnection sqlConnection = new SqlConnection(_connectionString);
+            string query = "Select * from Product where id=@id";
+            SqlCommand cmd = new SqlCommand(query, sqlConnection);
+            cmd.Parameters.Add("@id", SqlDbType.Int).Value = id;
+            cmd.CommandType = CommandType.Text;
+            sqlConnection.Open();
+            var reader = cmd.ExecuteReader();
+            Product product = new Product();
+            while (reader.Read())
+            {
+                product.Id = reader.GetInt32("Id");
+                product.Name = reader.GetString("Name");
+                product.Code = reader.GetString("Code");
+                product.Description = reader.GetString("Description");
+                product.CreatedDateTime = reader.GetDateTime("CreatedDateTime");
+            }
+            sqlConnection.Close();
+            return product;
+        }
+        public void UpdateProduct(Product product)
+        {
+            SqlConnection sqlConnection = new SqlConnection(_connectionString);
+            string query = "Update product set Name=@name, Code=@code, Description=@desc, CreatedDateTime=@createdDateTime" +
+                " where Id = @id";
+            SqlCommand sqlCommand = new SqlCommand(query, sqlConnection);
+            sqlCommand.Parameters.Add("@name", SqlDbType.VarChar).Value = product.Name;
+            sqlCommand.Parameters.Add("@code", SqlDbType.VarChar).Value = product.Code;
+            sqlCommand.Parameters.Add("@desc", SqlDbType.VarChar).Value = product.Description;
+            sqlCommand.Parameters.Add("@createdDateTime", SqlDbType.DateTime).Value = product.CreatedDateTime;
+            sqlCommand.Parameters.Add("@id", SqlDbType.Int).Value = product.Id;
+            sqlConnection.Open();
+            sqlCommand.ExecuteNonQuery();
+            sqlConnection.Close();
+        }
+        public void DeleteProduct(int id)
+        {
+            SqlConnection sqlConnection = new SqlConnection(_connectionString);
+            string query = "Delete from product where Id = @id";
+            SqlCommand sqlCommand = new SqlCommand(query, sqlConnection);
+            sqlCommand.Parameters.Add("@id", SqlDbType.Int).Value = id;
+            sqlConnection.Open();
+            sqlCommand.ExecuteNonQuery();
+            sqlConnection.Close();
         }
     }
 }
