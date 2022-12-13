@@ -6,7 +6,7 @@ namespace DivyaGyan_WebApp_MVC.Repository
 {
     public class ProductRepository
     {
-        private readonly string _connectionString = "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=ProductDb;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
+        private readonly string _connectionString = "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=ProductDb;Integrated Security=True;Connect Timeout=30";
         public List<Product> GetProducts()
         {
             List<Product> products = new List<Product>();
